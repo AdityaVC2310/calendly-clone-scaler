@@ -1,49 +1,46 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+export const dynamic = "force-dynamic";
+
+import { useSearchParams } from "next/navigation";
 
 export default function ConfirmationPage() {
-  const params = useSearchParams();
-  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const name = params.get("name");
-  const time = params.get("time");
-  const date = params.get("date");
-
-  // ✅ SAVE booking in localStorage (temporary DB)
-  useEffect(() => {
-    const existing = JSON.parse(localStorage.getItem("meetings")) || [];
-
-    const newMeeting = {
-      name,
-      time,
-      date,
-    };
-
-    localStorage.setItem(
-      "meetings",
-      JSON.stringify([...existing, newMeeting])
-    );
-
-    // ✅ REDIRECT after 2 seconds
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 2000);
-  }, []);
+  const name = searchParams.get("name") || "User";
+  const email = searchParams.get("email") || "";
+  const event = searchParams.get("event") || "Meeting";
+  const time = searchParams.get("time") || "";
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-lg p-8 rounded-xl text-center">
-        <h2 className="text-green-600 text-xl font-semibold">
-          Meeting Confirmed 🎉
-        </h2>
-        <p className="mt-2 text-gray-600">
-          {name}, your meeting is scheduled at:
+    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md text-center">
+
+        <h1 className="text-2xl font-bold text-green-600 mb-4">
+          Booking Confirmed 🎉
+        </h1>
+
+        <p className="text-gray-700 mb-2">
+          Thank you, <span className="font-semibold">{name}</span>
         </p>
-        <p className="text-blue-600 mt-2 font-medium">
-          {time} on {date}
-        </p>
+
+        {email && (
+          <p className="text-gray-600 text-sm mb-2">
+            Confirmation sent to: {email}
+          </p>
+        )}
+
+        <div className="mt-4 text-left text-gray-700">
+          <p><strong>Event:</strong> {event}</p>
+          {time && <p><strong>Time:</strong> {time}</p>}
+        </div>
+
+        <a
+          href="/dashboard"
+          className="mt-6 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Go to Dashboard
+        </a>
       </div>
     </div>
   );
