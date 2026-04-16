@@ -1,44 +1,25 @@
-import availabilityRoutes from "./routes/availability.routes.js";
 
-app.use("/api/v1/availability", availabilityRoutes);
-const express = require('express');
-const cors = require('cors');
+import express from "express";
+import cors from "cors";
+
+import bookingRoutes from "./routes/booking.routes.js";
+import meetingRoutes from "./routes/meeting.routes.js";
+import availabilityRoutes from "./routes/availability.routes.js";
 
 const app = express();
 
-// ✅ Middleware
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: '*' }));
 
-// ✅ Health Check
-app.get('/health', (_req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    message: 'Server is running',
-  });
+// Health check
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
-// ✅ Routes
-const eventTypeRoutes = require('./routes/eventType.routes');
-const availabilityRoutes = require('./routes/availability.routes');
-const bookingRoutes = require('./routes/booking.routes');
+// Routes
+app.use("/api/v1/bookings", bookingRoutes);
+app.use("/api/v1/meetings", meetingRoutes);
+app.use("/api/v1/availability", availabilityRoutes);
 
-// Event APIs
-app.use('/api/v1/event-types', eventTypeRoutes);
-
-// Availability APIs
-app.use('/api/v1', availabilityRoutes);
-
-// 🔥 FIXED Booking API
-app.use('/api/v1', bookingRoutes);
-
-// ❌ 404
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.method} ${req.originalUrl} not found.`,
-  });
-});
-
-module.exports = app;
+export default app;
