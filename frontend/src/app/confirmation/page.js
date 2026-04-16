@@ -1,10 +1,9 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function ConfirmationPage() {
+function ConfirmationContent() {
   const searchParams = useSearchParams();
 
   const name = searchParams.get("name") || "User";
@@ -43,5 +42,13 @@ export default function ConfirmationPage() {
         </a>
       </div>
     </div>
+  );
+}
+
+export default function ConfirmationPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+      <ConfirmationContent />
+    </Suspense>
   );
 }
