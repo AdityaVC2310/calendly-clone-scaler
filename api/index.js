@@ -6,23 +6,23 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Health route
-app.get("/", (req, res) => {
-  res.json({ message: "Backend is running 🚀" });
+// ✅ Health route (IMPORTANT CHANGE)
+app.get("/api", (req, res) => {
+    res.json({ message: "Backend is running 🚀" });
 });
 
-// ✅ Booking route (main API)
+// ✅ Booking route
 app.post("/api/v1/bookings", (req, res) => {
-  const data = req.body;
+    const data = req.body;
 
-  return res.json({
-    success: true,
-    data: {
-      ...data,
-      id: Date.now(),
-    },
-  });
+    return res.json({
+        success: true,
+        data: {
+            ...data,
+            id: Date.now(),
+        },
+    });
 });
 
-// Export for Vercel
+// 👇 THIS IS IMPORTANT FOR VERCEL
 export default app;
