@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+body {
+  background-color: #F8FAFC;
+}
+
+/* Smooth UI */
+* {
+  transition: all 0.2s ease-in-out;
+}
